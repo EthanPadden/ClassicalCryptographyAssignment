@@ -94,4 +94,15 @@ if __name__ == '__main__':
 
                 pair[0] = row1[column2_index]
                 pair[1] = row2[column1_index]
+
+        # join ciphertext together into string
+        joined_pair_strs = []
+        for pair in pairs:
+            joined_pair_str = ''.join(pair)
+            joined_pair_strs.append(joined_pair_str)
+
+        ciphertext = ''.join(joined_pair_strs)
+        print(ciphertext)
+        if len(ciphertext) != len(plaintext):
+            raise Exception('something went wrong')
 #TODO: 0 to O
