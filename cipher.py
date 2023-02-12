@@ -1,11 +1,32 @@
 import numpy as np
+import sys
 
 if __name__ == '__main__':
-    plaintext = 'MARY HAS A LITTLE LAMB ITS FLEECE AS WHITE AS SNOW'
-    key = 'TOMATOJUICE'
+    # *** parsing command line arguments and sanity check of strings ***
+
+    # check arguments from command line
+    if len(sys.argv) < 2:
+        raise Exception('not enough arguments')
+
+    plaintext = sys.argv[0]
+    key = sys.argv[1]
+
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789 '
 
-    # CREATING GRID
+    # check that all characters in the plaintext and key are in our alphabet
+    for character in plaintext:
+        if character not in alphabet:
+            raise Exception('character ' + str(character) + ' not in alphabet')
+
+    for character in key:
+        if character not in alphabet:
+            raise Exception('character ' + str(character) + ' not in alphabet')
+
+
+    # plaintext = 'MARY HAS A LITTLE LAMB ITS FLEECE AS WHITE AS SNOW'
+    # key = 'TOMATOJUICE'
+
+    # ***  setting up the grid, based on the keyword entered ***
     grid = np.empty((6, 6))     # create empty 6x6 matrix
 
     # remove duplicate letters from key
@@ -27,7 +48,7 @@ if __name__ == '__main__':
 
     grid = np.reshape(grid_array, (6,6))
 
-    # PREPARE PLAINTEXT
+    # *** preprocessing the plaintext string
     # check if there is an even number of characters
     if len(plaintext) % 2 != 0:
         raise Exception('plaintext must have an even number of characters')
@@ -43,9 +64,16 @@ if __name__ == '__main__':
             i += 2
 
         # find duplicate letters and replace the 2nd with X
+        # in the same loop, convert any occurrence of 0 to O
         for pair in pairs:
             if pair[0] == pair[1]:
                 pair[1] = 'X'
+
+            # this will not change the Xs back into 0s or Os
+            if pair[0] == '0':
+                pair[0] = 'O'
+            if pair[1] == '0':
+                pair[1] = 'O'
         # TODO: pair replaced with X may be wrong - go over
 
         # apply Playfair rules
