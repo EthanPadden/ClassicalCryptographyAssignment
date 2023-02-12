@@ -27,3 +27,27 @@ if __name__ == '__main__':
 
     grid = np.reshape(grid_array, (6,6))
 
+    # PREPARE PLAINTEXT
+    # check if there is an even number of characters
+    if len(plaintext) % 2 != 0:
+        raise Exception('plaintext must have an even number of characters')
+    else:
+        # split the plaintext into pairs of characters
+        pairs = []
+        i = 0
+        while i < len(plaintext):
+            pairs.append([
+                plaintext[i],
+                plaintext[i + 1]
+            ])
+            i += 2
+        print(pairs)
+
+        # find duplicate letters and replace the 2nd with X
+        for pair in pairs:
+            if pair[0] == pair[1]:
+                pair[1] = 'X'
+        print(pairs)
+        # TODO: pair replaced with X may be wrong - go over
+
+        # apply Playfair rules
