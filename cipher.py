@@ -41,13 +41,57 @@ if __name__ == '__main__':
                 plaintext[i + 1]
             ])
             i += 2
-        print(pairs)
 
         # find duplicate letters and replace the 2nd with X
         for pair in pairs:
             if pair[0] == pair[1]:
                 pair[1] = 'X'
-        print(pairs)
         # TODO: pair replaced with X may be wrong - go over
 
         # apply Playfair rules
+        # iterate through pairs
+        print(grid)
+        # for pair in pairs:
+        for pair in pairs:
+            # find where the first element is in the grid
+            location1 = np.where(grid == pair[0])
+            location2 = np.where(grid == pair[1])
+
+            # these are zero indexed
+            # the second [0] is simply to convert the result from a list to an int
+            # e.g. [5] to 5
+            row1_index = location1[0][0]
+            column1_index = location1[1][0]
+            row2_index = location2[0][0]
+            column2_index = location2[1][0]
+
+            # check are they in the same row
+            if row1_index == row2_index:
+                print('row')
+                # get the row of the grid as a list
+                row = grid[row1_index]
+
+                # the column vars are the indexes of the list, so replace them with the following character in the row
+                pair[0] = row[(column1_index + 1) % 6]
+                pair[1] = row[(column2_index + 1) % 6]
+
+            # check are they in the same column
+            elif column1_index == column2_index:
+                print('column')
+                # get the column of the grid as a list
+                column = grid[:, column1_index]
+
+                # the row vars are the indexes of the list, so replace them with the following character in the column
+                pair[0] = row[(row1_index + 1) % 6]
+                pair[1] = row[(row2_index + 1) % 6]
+
+            # otherwise apply the last rule - Otherwise each letter gets replaced by the letter in its row but in the other
+            # letters column
+            else:
+                print('neither')
+                row1 = grid[row1_index]
+                row2 = grid[row2_index]
+
+                pair[0] = row1[column2_index]
+                pair[1] = row2[column1_index]
+#TODO: 0 to O
